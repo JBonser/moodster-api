@@ -105,3 +105,6 @@ venv.bak/
 
 # vscode
 .vscode
+
+# dev/test db's
+*.db

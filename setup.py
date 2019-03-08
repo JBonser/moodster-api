@@ -9,5 +9,9 @@ setup(
     ],
     install_requires=[
         'Flask',
+        'Flask-Migrate',
+        'Flask-SQLAlchemy',
+        'flask-restplus',
+        'Flask-Testing'
     ]
 )
