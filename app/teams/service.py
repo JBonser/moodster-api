@@ -5,20 +5,21 @@ from app.teams.model import Team
 
 
 def create_new_team(data):
-    new_team = create_team_in_db(data)
-    response_object = {
+    team_name = data['name']
+    new_team = create_team_in_db(team_name)
+    response = {
         'status': 'Success',
         'message': 'Successfully created team.',
         'team_id': new_team.public_id,
         'name': new_team.name
     }
-    return response_object, 201
+    return response, 201
 
 
-def create_team_in_db(data):
+def create_team_in_db(team_name):
     new_team = Team(
         public_id=str(uuid.uuid4()),
-        name=data['name']
+        name=team_name
     )
     db.session.add(new_team)
     db.session.commit()

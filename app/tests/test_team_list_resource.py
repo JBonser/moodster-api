@@ -26,3 +26,12 @@ class TestTeamListResource(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual('test_team_name', json_response['name'])
         self.assertEqual('Success', json_response['status'])
+
+    def test_team_creation_no_name(self):
+        data = {}
+        response = self.client.post('/teams/', json=data)
+        json_response = response.get_json()
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('payload validation failed', json_response['message'])
+        self.assertIn('name', json_response['errors'])
