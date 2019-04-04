@@ -11,7 +11,10 @@ setup(
         'Flask',
         'Flask-Migrate',
         'Flask-SQLAlchemy',
+        'SQLAlchemy-Utils',
         'flask-restplus',
-        'Flask-Testing'
+        'Flask-Testing',
+        'bcrypt',
+        'passlib'
     ]
 )

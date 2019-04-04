@@ -1,6 +1,8 @@
 Flask==1.0.2
 Flask-Migrate==2.4.0
 Flask-SQLAlchemy==2.3.2
+SQLAlchemy-Utils==0.33.11
 flask-restplus==0.12.1
 Flask-Testing==0.7.1
-
+bcrypt==3.1.6
+passlib==1.7.1
