@@ -17,7 +17,7 @@ class TeamList(Resource):
     @api.doc('create a new team')
     @api.expect(team_view_model, validate=True)
     def post(self):
-        """Creates a new Team """
+        """Creates a new team """
         data = request.get_json()
         return create_new_team(data=data)
 

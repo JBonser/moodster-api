@@ -19,7 +19,9 @@ def create_app(config_name):
     api = Api(blueprint, description='Team related operations')
 
     from app.teams.view import api as team_ns
+    from app.users.view import api as user_ns
     api.add_namespace(team_ns)
+    api.add_namespace(user_ns)
 
     app.register_blueprint(blueprint)
 
