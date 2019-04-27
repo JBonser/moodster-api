@@ -27,7 +27,7 @@ class TeamList(Resource):
 @api.response(404, 'Team not found.')
 class Team(Resource):
     @api.doc('get team')
-    @api.marshal_with(team_view_model)
+    @api.marshal_with(team_view_model, envelope='data')
     def get(self, public_id):
         """Get a team given its identifier"""
         team = get_team(public_id)

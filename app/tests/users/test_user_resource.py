@@ -1,4 +1,5 @@
 from flask_testing import TestCase
+from flask_migrate import upgrade, downgrade
 
 from app import create_app, db
 
@@ -8,11 +9,11 @@ class TestUserResource(TestCase):
         return create_app('test')
 
     def setUp(self):
-        db.create_all()
+        upgrade(x_arg='data=true')
 
     def tearDown(self):
         db.session.remove()
-        db.drop_all()
+        downgrade(x_arg='data=true', revision='base')
 
     def test_user_creation(self):
         data = {

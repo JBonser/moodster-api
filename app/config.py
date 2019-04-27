@@ -1,9 +1,12 @@
 import os
 
-# uncomment the line below for postgres database url from environment variable
-# postgres_local_base = os.environ['DATABASE_URL']
-
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+# must provide the env var for postgres db or local sqlite version
+# will be used.
+postgres_local_base = os.getenv(
+    'DATABASE_URL',
+    default='sqlite:///' + os.path.join(basedir, 'moodster_prod.db'))
 
 
 class Config:
@@ -30,8 +33,7 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
-    # uncomment the line below to use postgres
-    # SQLALCHEMY_DATABASE_URI = postgres_local_base
+    SQLALCHEMY_DATABASE_URI = postgres_local_base
 
 
 config_by_name = dict(

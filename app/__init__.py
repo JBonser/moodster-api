@@ -7,22 +7,25 @@ from app.config import config_by_name
 
 
 db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app(config_name):
-    app = Flask(__name__)
-    app.config.from_object(config_by_name[config_name])
-    db.init_app(app)
-    Migrate(app, db)
+    app_ = Flask(__name__)
+    app_.config.from_object(config_by_name[config_name])
+    db.init_app(app_)
+    migrate.init_app(app_, db)
 
     blueprint = Blueprint('api', __name__)
-    api = Api(blueprint, description='Team related operations')
+    api = Api(blueprint, description='Moodster API')
 
     from app.teams.view import api as team_ns
     from app.users.view import api as user_ns
+    from app.team_roles.view import api as team_role_ns
     api.add_namespace(team_ns)
     api.add_namespace(user_ns)
+    api.add_namespace(team_role_ns)
 
-    app.register_blueprint(blueprint)
+    app_.register_blueprint(blueprint)
 
-    return app
+    return app_
