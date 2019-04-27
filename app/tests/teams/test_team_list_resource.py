@@ -1,5 +1,5 @@
 from flask_testing import TestCase
-
+from flask_migrate import upgrade, downgrade
 from app import create_app, db
 
 
@@ -8,19 +8,14 @@ class TestTeamListResource(TestCase):
         return create_app('test')
 
     def setUp(self):
-        with self.app.app_context():
-            db.create_all()
+        upgrade(x_arg='data=true')
 
     def tearDown(self):
-        with self.app.app_context():
-            db.session.remove()
-            db.drop_all()
+        db.session.remove()
+        downgrade(x_arg='data=true', revision='base')
 
     def test_team_creation(self):
-        data = {
-            'name': 'test_team_name'
-        }
-        response = self.client.post('/teams/', json=data)
+        response = self.client.post('/teams/', json={'name': 'test_team_name'})
         json_response = response.get_json()
 
         self.assertEqual(response.status_code, 201)
@@ -28,8 +23,7 @@ class TestTeamListResource(TestCase):
         self.assertEqual('Success', json_response['status'])
 
     def test_team_creation_no_name(self):
-        data = {}
-        response = self.client.post('/teams/', json=data)
+        response = self.client.post('/teams/', json={})
         json_response = response.get_json()
 
         self.assertEqual(response.status_code, 400)
