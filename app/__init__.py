@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from app.config import config_by_name
 
 
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={'expire_on_commit': False})
 migrate = Migrate()
 
 
@@ -21,9 +21,11 @@ def create_app(config_name):
 
     from app.teams.view import api as team_ns
     from app.users.view import api as user_ns
+    from app.team_members.view import api as team_member_ns
     from app.team_roles.view import api as team_role_ns
     api.add_namespace(team_ns)
     api.add_namespace(user_ns)
+    api.add_namespace(team_member_ns)
     api.add_namespace(team_role_ns)
 
     app_.register_blueprint(blueprint)
