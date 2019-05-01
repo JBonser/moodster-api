@@ -18,6 +18,5 @@ class User(db.Model):
         nullable=False
     )
 
-
     def __repr__(self):
         return "<User '{}'>".format(self.email)

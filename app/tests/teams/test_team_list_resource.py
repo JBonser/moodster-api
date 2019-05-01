@@ -20,7 +20,7 @@ class TestTeamListResource(TestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual('test_team_name', json_response['name'])
-        self.assertEqual('Success', json_response['status'])
+        self.assertIn('id', json_response)
 
     def test_team_creation_no_name(self):
         response = self.client.post('/teams/', json={})
