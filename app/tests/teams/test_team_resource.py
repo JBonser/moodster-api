@@ -16,7 +16,7 @@ class TestTeamResource(TestCase):
         db.session.remove()
         downgrade(x_arg='data=true', revision='base')
 
-    def test_team_get(self):
+    def test_team_get_success(self):
         team = create_team_in_db('test_team_name')
         response = self.client.get('/teams/'+team.public_id)
         data = response.get_json()['data']
@@ -24,6 +24,13 @@ class TestTeamResource(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual('test_team_name', data['name'])
 
-    def test_team_get_invalid_id(self):
-        response = self.client.get('/teams/my-invalid-id')
+    def test_team_get_fails_with_invalid_id(self):
+        team_id = 'my-invalid-id'
+        response = self.client.get('/teams/{}'.format(team_id))
+        json_response = response.get_json()
         self.assertEqual(response.status_code, 404)
+        self.assertEqual(json_response['status'], 'Failed')
+        self.assertEqual(
+            json_response['message'],
+            'The team with id {} does not exist'.format(team_id))
+        print(response.get_json())

@@ -1,20 +1,14 @@
 import uuid
 
 from app import db
-from app.users.model import User
+from .model import User
 
 
 def create_new_user(data):
     email = data['email']
     password = data['password']
     new_user = create_user_in_db(email, password)
-    response = {
-        'status': 'Success',
-        'message': 'Successfully created user',
-        'user_id': new_user.public_id,
-        'email': new_user.email
-    }
-    return response, 201
+    return new_user, 201
 
 
 def create_user_in_db(email, password):

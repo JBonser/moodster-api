@@ -1,19 +1,14 @@
 import uuid
-
+from flask_restplus import marshal
 from app import db
 from app.teams.model import Team
+from .schemas import team_view_schema
 
 
 def create_new_team(data):
     team_name = data['name']
     new_team = create_team_in_db(team_name)
-    response = {
-        'status': 'Success',
-        'message': 'Successfully created team.',
-        'team_id': new_team.public_id,
-        'name': new_team.name
-    }
-    return response, 201
+    return new_team, 201
 
 
 def create_team_in_db(team_name):
@@ -27,4 +22,11 @@ def create_team_in_db(team_name):
 
 
 def get_team(public_id):
-    return Team.query.filter_by(public_id=public_id).first()
+    team = Team.query.filter_by(public_id=public_id).first()
+    if not team:
+        response = {
+            'status': 'Failed',
+            'message': 'The team with id {} does not exist'.format(public_id)
+        }
+        return response, 404
+    return marshal(data=team, fields=team_view_schema, envelope='data'), 200

@@ -16,14 +16,14 @@ class TestUserResource(TestCase):
         downgrade(x_arg='data=true', revision='base')
 
     def test_user_creation(self):
-        data = {
+        json = {
             'email': 'test@test.co.uk',
             'password': 'password123'
         }
-        response = self.client.post('/users/', json=data)
-        json_response = response.get_json()
+        response = self.client.post('/users/', json=json)
+        data = response.get_json()['data']
 
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(data['email'], json_response['email'])
-        self.assertEqual('Success', json_response['status'])
-        self.assertIsNotNone(json_response['user_id'])
+        self.assertEqual(data['email'], data['email'])
+        self.assertIn('id', data)
+        self.assertNotIn('password', data)

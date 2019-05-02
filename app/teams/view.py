@@ -1,21 +1,20 @@
 from flask import request
-from flask_restplus import Resource, fields, Namespace
+from flask_restplus import Resource, Namespace
 
-from app.teams.service import create_new_team, get_team
+from .service import create_new_team, get_team
+from .schemas import team_view_schema, team_create_schema
 
 
 api = Namespace('teams', description='team related operations')
-team_view_model = api.model('team', {
-    'name': fields.String(required=True, description='team name'),
-    'public_id': fields.String(description='team identifier')
-})
+api.models[team_view_schema.name] = team_view_schema
+api.models[team_create_schema.name] = team_create_schema
 
 
 @api.route('/')
 class TeamList(Resource):
-    @api.response(201, 'Team successfully created.')
     @api.doc('create a new team')
-    @api.expect(team_view_model, validate=True)
+    @api.expect(team_create_schema, validate=True)
+    @api.marshal_with(team_view_schema)
     def post(self):
         """Creates a new team """
         data = request.get_json()
@@ -24,14 +23,9 @@ class TeamList(Resource):
 
 @api.route('/<public_id>')
 @api.param('public_id', 'The team identifier')
-@api.response(404, 'Team not found.')
 class Team(Resource):
     @api.doc('get team')
-    @api.marshal_with(team_view_model, envelope='data')
+    @api.response(404, 'Could not find a Team with that id')
     def get(self, public_id):
         """Get a team given its identifier"""
-        team = get_team(public_id)
-        if not team:
-            api.abort(404)
-        else:
-            return team
+        return get_team(public_id)
