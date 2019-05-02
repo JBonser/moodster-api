@@ -24,11 +24,13 @@ def create_app(config_name):
     from app.team_members.view import api as team_member_ns
     from app.team_roles.view import api as team_role_ns
     from app.mood_templates.view import api as mood_template_ns
+    from app.moods.view import api as mood_ns
     api.add_namespace(team_ns)
     api.add_namespace(user_ns)
     api.add_namespace(team_member_ns)
     api.add_namespace(team_role_ns)
     api.add_namespace(mood_template_ns)
+    api.add_namespace(mood_ns)
 
     app_.register_blueprint(blueprint)
 
