@@ -15,6 +15,7 @@ setup(
         'flask-restplus',
         'Flask-Testing',
         'bcrypt',
-        'passlib'
+        'passlib',
+        'colour'
     ]
 )
