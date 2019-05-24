@@ -1,0 +1,16 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+services:
+  - postgresql
+install:
+  - pip install -r requirements.txt
+  - pip install .
+before_script:
+  - psql -c "create test_user user with password 'password';" -U postgres
+  - psql -c 'create database moodster_test;' -U test_user
+env:
+  - DATABASE_URL=postgresql://test_user:password@localhost/moodster_test
+script:
+  - python -m unittest discover app/tests/
