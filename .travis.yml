@@ -9,6 +9,7 @@ install:
   - pip install .
 before_script:
   - psql -c "create user test_user with password 'password';" -U postgres
+  - psql -c "alter role test_user superuser;" -U postgres
   - psql -c 'create database moodster_test;' -U test_user
 env:
   - DATABASE_URL=postgresql://test_user:password@localhost/moodster_test
