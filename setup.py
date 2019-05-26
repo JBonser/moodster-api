@@ -16,6 +16,7 @@ setup(
         'Flask-Testing',
         'bcrypt',
         'passlib',
-        'colour'
+        'colour',
+        'psycopg2'
     ]
 )
