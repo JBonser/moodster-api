@@ -62,8 +62,8 @@ def data_upgrades():
     op.bulk_insert(
         team_role,
         [
-            {'id': '1', 'public_id': str(uuid.uuid4()), 'name': 'Admin'},
-            {'id': '2', 'public_id': str(uuid.uuid4()), 'name': 'Member'}
+            {'public_id': str(uuid.uuid4()), 'name': 'Admin'},
+            {'public_id': str(uuid.uuid4()), 'name': 'Member'}
         ]
     )
 

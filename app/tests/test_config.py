@@ -16,9 +16,6 @@ class TestDevelopmentConfig(TestCase):
         self.assertFalse(self.app.config['SECRET_KEY'] == 'my_precious')
         self.assertTrue(self.app.config['DEBUG'] is True)
         self.assertFalse(current_app is None)
-        uri = self.app.config['SQLALCHEMY_DATABASE_URI']
-        self.assertTrue(uri == 'sqlite:///' + os.path.join(
-                basedir, 'moodster_dev.db'))
 
 
 class TestTestingConfig(TestCase):
@@ -28,9 +25,6 @@ class TestTestingConfig(TestCase):
     def test_app_is_testing(self):
         self.assertFalse(self.app.config['SECRET_KEY'] == 'my_precious')
         self.assertTrue(self.app.config['DEBUG'])
-        uri = self.app.config['SQLALCHEMY_DATABASE_URI']
-        self.assertTrue(uri == 'sqlite:///' + os.path.join(
-            basedir, 'moodster_test.db'))
 
 
 class TestProductionConfig(TestCase):

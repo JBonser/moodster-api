@@ -68,7 +68,6 @@ def data_upgrades():
         template,
         [
             {
-                'id': '1',
                 'public_id': str(uuid.uuid4()),
                 'name': 'Default Mood Template'
             }
@@ -88,35 +87,30 @@ def data_upgrades():
         mood,
         [
             {
-                'id': '1',
                 'public_id': str(uuid.uuid4()),
                 'name': 'Amazing',
                 'colour': Color('#53d192'),
                 'template_id': 1
             },
             {
-                'id': '2',
                 'public_id': str(uuid.uuid4()),
                 'name': 'Great',
                 'colour': Color('#5e95ed'),
                 'template_id': 1
             },
             {
-                'id': '3',
                 'public_id': str(uuid.uuid4()),
                 'name': 'Okay',
                 'colour': Color('#ede357'),
                 'template_id': 1
             },
             {
-                'id': '4',
                 'public_id': str(uuid.uuid4()),
                 'name': 'Poor',
                 'colour': Color('#e28f53'),
                 'template_id': 1
             },
             {
-                'id': '5',
                 'public_id': str(uuid.uuid4()),
                 'name': 'Awful',
                 'colour': Color('#e05f4e'),

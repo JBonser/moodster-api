@@ -33,4 +33,3 @@ class TestTeamResource(TestCase):
         self.assertEqual(
             json_response['message'],
             'The team with id {} does not exist'.format(team_id))
-        print(response.get_json())

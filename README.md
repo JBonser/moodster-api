@@ -1,6 +1,8 @@
 # Moodster-API
 Moodster API Project
 
+[![Build Status](https://travis-ci.org/JBonser/moodster-api.svg?branch=master)](https://travis-ci.org/JBonser/moodster-api)
+
 # Setting up the Development Environment
 ```
 python3 -m venv env

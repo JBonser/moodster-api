@@ -40,7 +40,6 @@ class TestMoodListResource(TestCase):
         json_response = response.get_json()
         data = json_response['data']
 
-        print(data)
         self.assertEqual(response.status_code, 200)
         self.assert_mood_in_response(mood1, data)
         self.assert_mood_in_response(mood2, data)
