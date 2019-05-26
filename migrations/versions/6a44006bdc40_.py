@@ -68,7 +68,6 @@ def data_upgrades():
         template,
         [
             {
-                'id': '1',
                 'public_id': str(uuid.uuid4()),
                 'name': 'Default Mood Template'
             }
