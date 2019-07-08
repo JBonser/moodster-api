@@ -4,7 +4,8 @@ from flask_restplus import Resource, Namespace
 from .service import (
     create_new_mood_template,
     get_all_mood_templates,
-    get_mood_template
+    get_mood_template,
+    get_all_moods_in_template
 )
 from .schemas import mood_template_view_schema, mood_template_create_schema
 
@@ -40,3 +41,14 @@ class MoodTemplate(Resource):
     def get(self, public_id):
         """Get a mood template given its identifier"""
         return get_mood_template(public_id)
+
+
+@api.route('/<public_id>/moods')
+@api.param('public_id', 'mood template identifier')
+class MoodTemplateMoodList(Resource):
+    @api.doc('get all moods in a mood template')
+    @api.response(200, 'Successfully retrieved all moods for a mood template.')
+    @api.response(404, 'Could not find a Mood Template with that id')
+    def get(self, public_id):
+        """Get all moods in a mood template given its identifier"""
+        return get_all_moods_in_template(public_id)

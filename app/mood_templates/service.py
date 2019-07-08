@@ -3,6 +3,8 @@ from flask_restplus import marshal
 from app import db
 from .model import MoodTemplate
 from .schemas import mood_template_view_schema
+from ..moods.model import Mood
+from ..moods.schemas import mood_view_schema
 
 
 def create_new_mood_template(data):
@@ -30,6 +32,24 @@ def create_mood_template_in_db(name):
     db.session.add(mood_template)
     db.session.commit()
     return mood_template
+
+
+def get_all_moods_in_template(public_id):
+    mood_template = MoodTemplate.query.filter_by(public_id=public_id).first()
+    if not mood_template:
+        response = {
+            'status': 'Failed',
+            'message': 'The mood template with id {} '
+                       'does not exist'.format(public_id)
+        }
+        return response, 404
+
+    moods = Mood.query.filter_by(template=mood_template).all()
+
+    return marshal(
+        data=moods,
+        fields=mood_view_schema,
+        envelope='data'), 200
 
 
 def get_mood_template(public_id):
