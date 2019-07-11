@@ -35,25 +35,35 @@ def submit_new_team_member_mood(team_id, data):
         return response, 404
     
     new_team_member_mood = marshal(
-        data=create_team_member_mood_in_db(team_member_id, mood_id),
+        data=create_team_member_mood_in_db(team_member, mood),
         fields=team_member_mood_view_schema)
     return new_team_member_mood, 201
 
 
-def create_team_member_mood_in_db(team_member_id, mood_id):
+def create_team_member_mood_in_db(team_member, mood):
     new_team_member_mood = TeamMemberMood(
         public_id=str(uuid.uuid4()),
-        team_member_id=team_member_id,
-        mood_id=mood_id
+        team_member=team_member,
+        mood=mood
     )
     db.session.add(new_team_member_mood)
     db.session.commit()
     return new_team_member_mood
 
 
-def get_team_member_mood(public_id):
-    return TeamMemberMood.query.filter_by(public_id=public_id).first()
-
-def get_all_team_member_moods(public_id):
-    return TeamMemberMood.query.filter_by(public_id=public_id).all()
+def get_all_team_moods(public_id):
+    team_moods = TeamMemberMood.query.join(TeamMember).join(Team).filter(Team.public_id == public_id).all()
+    return marshal(
+            data=team_moods,
+            fields=team_member_mood_view_schema,
+            envelope='data'), 200
+    
+    
+def get_all_team_member_moods(team_member_id):
+    team_member = TeamMember.query.filter_by(public_id=team_member_id).first()
+    team_member_moods = TeamMemberMood.query.filter_by(team_member=team_member).all()
+    return marshal(
+            data=team_member_moods,
+            fields=team_member_mood_view_schema,
+            envelope='data'), 200
 
