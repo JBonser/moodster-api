@@ -22,7 +22,9 @@ def submit_new_team_member_mood(team_id, team_member_id, data):
 
     team_member = TeamMember.query.filter_by(public_id=team_member_id).first()
     if team_member is None:
-        response["message"] = "Team Member with id {} does not exist".format(team_id)
+        response["message"] = "Team Member with id {} does not exist".format(
+            team_member_id
+        )
         return response, 404
 
     if (

@@ -44,4 +44,4 @@ class TeamMemberMood(Resource):
     @api.response(404, "Could not find a team member with that id")
     def get(self, public_id, member_id):
         """Get all submitted moods by a team member given its identifier"""
-        return get_all_team_member_moods(public_id, member_id)
+        return get_all_team_member_moods(member_id)

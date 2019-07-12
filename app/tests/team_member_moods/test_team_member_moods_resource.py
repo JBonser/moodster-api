@@ -49,8 +49,10 @@ class TestTeamMembersMoodsResource(TestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertIn("id", json_response)
-        self.assertEqual(json_response["team_member_id"], self.test_user1.public_id)
-        self.assertEqual(json_response["team_role_id"], self.mood1.public_id)
+        self.assertEqual(
+            json_response["team_member_id"], self.test_team_member_1.public_id
+        )
+        self.assertEqual(json_response["mood_id"], self.mood1.public_id)
 
     def test_submit_team_member_mood_fails_with_invalid_team(self):
         response = self.client.post(
@@ -112,33 +114,30 @@ class TestTeamMembersMoodsResource(TestCase):
         set_mood_2 = create_team_member_mood_in_db(self.test_team_member_1, self.mood2)
         set_mood_3 = create_team_member_mood_in_db(self.test_team_member_2, self.mood1)
         set_mood_4 = create_team_member_mood_in_db(self.test_team_member_2, self.mood2)
-        response = self.client.get("/teams/{}/moods/".format(self.test_team1.public_id))
+        response = self.client.get("/teams/{}/moods".format(self.test_team1.public_id))
         data = response.get_json()["data"]
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(
             any(
-                item["team_member_id"]
-                == self.test_team_member_1.public_id | item["team_member_id"]
-                == self.test_team_member_2.public_id
+                item["team_member_id"] == self.test_team_member_1.public_id
+                or item["team_member_id"] == self.test_team_member_2.public_id
                 for item in data
             )
         )
         self.assertTrue(
             any(
-                item["mood_id"]
-                == self.mood1.public_id | item["mood_id"]
-                == self.mood2.public_id
+                item["mood_id"] == self.mood1.public_id
+                or item["mood_id"] == self.mood2.public_id
                 for item in data
             )
         )
         self.assertTrue(
             any(
-                item["id"]
-                == set_mood_1.public_id | item["id"]
-                == set_mood_2.public_id | item["id"]
-                == set_mood_3.public_id | item["id"]
-                == set_mood_4.public_id
+                item["id"] == set_mood_1.public_id
+                or item["id"] == set_mood_2.public_id
+                or item["id"] == set_mood_3.public_id
+                or item["id"] == set_mood_4.public_id
                 for item in data
             )
         )
@@ -153,7 +152,8 @@ class TestTeamMembersMoodsResource(TestCase):
                 self.test_team1.public_id, self.test_team_member_1.public_id
             )
         )
-        data = response.get_json()["data"]
+        json_response = response.get_json()
+        data = json_response["data"]
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(
@@ -164,19 +164,17 @@ class TestTeamMembersMoodsResource(TestCase):
         )
         self.assertTrue(
             any(
-                item["mood_id"]
-                == self.mood1.public_id | item["mood_id"]
-                == self.mood2.public_id
+                item["mood_id"] == self.mood1.public_id
+                or item["mood_id"] == self.mood2.public_id
                 for item in data
             )
         )
         self.assertTrue(
             any(
-                item["id"]
-                == set_mood_1.public_id | item["id"]
-                == set_mood_2.public_id | item["id"]
-                == set_mood_3.public_id | item["id"]
-                == set_mood_4.public_id
+                item["id"] == set_mood_1.public_id
+                or item["id"] == set_mood_2.public_id
+                or item["id"] == set_mood_3.public_id
+                or item["id"] == set_mood_4.public_id
                 for item in data
             )
         )
