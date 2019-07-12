@@ -37,11 +37,8 @@ class TestTeamMembersMoodsResource(TestCase):
 
     def test_submit_team_member_mood_success(self):
         response = self.client.post(
-            "/teams/"
-            + self.test_team1.public_id
-            + "/members/"
-            + self.test_team_member_1.public_id
-            + "/moods",
+            f"/teams/{self.test_team1.public_id}"
+            f"/members/{self.test_team_member_1.public_id}/moods",
             json={"mood_id": self.mood1.public_id},
         )
 
@@ -55,12 +52,9 @@ class TestTeamMembersMoodsResource(TestCase):
         self.assertEqual(json_response["mood_id"], self.mood1.public_id)
 
     def test_submit_team_member_mood_fails_with_invalid_team(self):
+        invalid_id = 'invalid_team_id'
         response = self.client.post(
-            "/teams/"
-            + "invalid_team_id"
-            + "/members/"
-            + self.test_team_member_1.public_id
-            + "/moods",
+            f"/teams/{invalid_id}/members/{self.test_team_member_1.public_id}/moods",
             json={"mood_id": self.mood1.public_id},
         )
 
@@ -69,17 +63,15 @@ class TestTeamMembersMoodsResource(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json_response["status"], "Failed")
         self.assertEqual(
-            json_response["message"], "Team with id invalid_team_id does not exist"
+            json_response["message"], f"Team with id {invalid_id} does not exist"
         )
 
     def test_submit_team_member_mood_fails_with_invalid_mood(self):
+        invalid_id = "invalid_mood_id"
         response = self.client.post(
-            "/teams/"
-            + self.test_team1.public_id
-            + "/members/"
-            + self.test_team_member_1.public_id
-            + "/moods",
-            json={"mood_id": "invalid_mood_id"},
+            f"/teams/{self.test_team1.public_id}"
+            f"/members/{self.test_team_member_1.public_id}/moods",
+            json={"mood_id": invalid_id},
         )
 
         json_response = response.get_json()
@@ -87,16 +79,13 @@ class TestTeamMembersMoodsResource(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json_response["status"], "Failed")
         self.assertEqual(
-            json_response["message"], "Mood with id invalid_mood_id does not exist"
+            json_response["message"], f"Mood with id {invalid_id} does not exist"
         )
 
     def test_submit_team_member_mood_fails_with_invalid_team_member(self):
+        invalid_id = "invalid_team_member_id"
         response = self.client.post(
-            "/teams/"
-            + self.test_team1.public_id
-            + "/members/"
-            + "invalid_team_member_id"
-            + "/moods",
+            f"/teams/{self.test_team1.public_id}/members/{invalid_id}/moods",
             json={"mood_id": self.mood1.public_id},
         )
 
@@ -106,7 +95,7 @@ class TestTeamMembersMoodsResource(TestCase):
         self.assertEqual(json_response["status"], "Failed")
         self.assertEqual(
             json_response["message"],
-            "Team Member with id invalid_team_member_id does not exist",
+            f"Team Member with id {invalid_id} does not exist",
         )
 
     def test_team_mood_get(self):
@@ -114,7 +103,7 @@ class TestTeamMembersMoodsResource(TestCase):
         set_mood_2 = create_team_member_mood_in_db(self.test_team_member_1, self.mood2)
         set_mood_3 = create_team_member_mood_in_db(self.test_team_member_2, self.mood1)
         set_mood_4 = create_team_member_mood_in_db(self.test_team_member_2, self.mood2)
-        response = self.client.get("/teams/{}/moods".format(self.test_team1.public_id))
+        response = self.client.get(f"/teams/{self.test_team1.public_id}/moods")
         data = response.get_json()["data"]
 
         self.assertEqual(response.status_code, 200)
@@ -148,9 +137,8 @@ class TestTeamMembersMoodsResource(TestCase):
         set_mood_3 = create_team_member_mood_in_db(self.test_team_member_1, self.mood1)
         set_mood_4 = create_team_member_mood_in_db(self.test_team_member_1, self.mood2)
         response = self.client.get(
-            "/teams/{}/members/{}/moods".format(
-                self.test_team1.public_id, self.test_team_member_1.public_id
-            )
+            f"/teams/{self.test_team1.public_id}/"
+            f"members/{self.test_team_member_1.public_id}/moods"
         )
         json_response = response.get_json()
         data = json_response["data"]

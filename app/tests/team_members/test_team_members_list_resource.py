@@ -41,9 +41,10 @@ class TestTeamMembersListResource(TestCase):
         self.assertEqual(json_response['user_id'], self.test_user1.public_id)
 
     def test_team_members_post_fails_with_invalid_role(self):
+        invalid_id = 'invalid_role_id'
         response = self.send_team_members_post(
             self.test_team1.public_id,
-            'invalid_id',
+            invalid_id,
             self.test_user1.public_id)
 
         json_response = response.get_json()
@@ -51,24 +52,26 @@ class TestTeamMembersListResource(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json_response['status'], 'Failed')
         self.assertEqual(
-            json_response['message'], 'Role with id invalid_id does not exist')
+            json_response['message'], f'Role with id {invalid_id} does not exist')
 
     def test_team_members_post_fails_with_invalid_user(self):
+        invalid_id = 'invalid_user_id'
         response = self.send_team_members_post(
             self.test_team1.public_id,
             self.member_role.public_id,
-            'invalid_id')
+            invalid_id)
 
         json_response = response.get_json()
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json_response['status'], 'Failed')
         self.assertEqual(
-            json_response['message'], 'User with id invalid_id does not exist')
+            json_response['message'], f'User with id {invalid_id} does not exist')
 
     def test_team_members_post_fails_with_invalid_team_url(self):
+        invalid_id = 'invalid_team_url'
         response = self.send_team_members_post(
-            'invalid_team_url',
+            invalid_id,
             self.member_role.public_id,
             self.test_user1.public_id)
 
@@ -78,7 +81,7 @@ class TestTeamMembersListResource(TestCase):
         self.assertEqual(json_response['status'], 'Failed')
         self.assertEqual(
             json_response['message'],
-            'Team with id invalid_team_url does not exist')
+            f'Team with id {invalid_id} does not exist')
 
     def test_team_members_post_fails_with_duplicate_entry(self):
         # First Teams Request
@@ -178,8 +181,7 @@ class TestTeamMembersListResource(TestCase):
         team_member2 = create_team_member_in_db(
             self.test_team1, self.test_user2, self.member_role)
 
-        response = self.client.get("/teams/{}/members/".format(
-                self.test_team1.public_id))
+        response = self.client.get(f"/teams/{self.test_team1.public_id}/members/")
         data = response.get_json()['data']
 
         self.assertEqual(response.status_code, 200)
@@ -190,20 +192,18 @@ class TestTeamMembersListResource(TestCase):
 
     def test_team_members_get_fails_with_invalid_team_id(self):
         team_id = 'invalid-team-id'
-        response = self.client.get("/teams/{}/members/".format(team_id))
+        response = self.client.get(f"/teams/{team_id}/members/")
 
         json_response = response.get_json()
         self.assertEqual(response.status_code, 404)
-        print(json_response)
         self.assertEqual(json_response['status'], 'Failed')
         self.assertEqual(
             json_response['message'],
-            'The team with id {} does not exist'.format(team_id))
+            f'The team with id {team_id} does not exist')
 
     def send_team_members_post(self, team_id, role_id, user_id):
         team_member = {
             'user_id': user_id,
             'team_role_id': role_id
         }
-        return self.client.post("/teams/{}/members/".format(
-                team_id), json=team_member)
+        return self.client.post(f"/teams/{team_id}/members/", json=team_member)

@@ -19,13 +19,9 @@ class Mood(db.Model):
 
     def __repr__(self):
         return (
-            "<{class_name}("
-            "public_id={self.public_id}, "
-            "name={self.name}, "
-            "colour={self.colour}, "
-            "template_id={self.template_id} "
-            ")>".format(
-                class_name=self.__class__.__name__,
-                self=self
-            )
+            f"<{self.__class__.__name__} ("
+            f"public_id={self.public_id}, "
+            f"name={self.name}, "
+            f"colour={self.colour}, "
+            f"template_id={self.template_id}) >"
         )

@@ -14,7 +14,7 @@ def create_new_team_member(team_id, data):
     role_id = data['team_role_id']
     response = {
         'status': 'Failed',
-        'message': 'User with id {} does not exist'.format(user_id),
+        'message': f'User with id {user_id} does not exist',
     }
     user = User.query.filter_by(public_id=user_id).first()
     if user is None:
@@ -22,12 +22,12 @@ def create_new_team_member(team_id, data):
 
     team = Team.query.filter_by(public_id=team_id).first()
     if team is None:
-        response['message'] = 'Team with id {} does not exist'.format(team_id)
+        response['message'] = f'Team with id {team_id} does not exist'
         return response, 404
 
     role = TeamRole.query.filter_by(public_id=role_id).first()
     if role is None:
-        response['message'] = 'Role with id {} does not exist'.format(role_id)
+        response['message'] = f'Role with id {role_id} does not exist'
         return response, 404
 
     found = TeamMember.query.filter_by(user=user, team=team, role=role).first()
@@ -63,7 +63,7 @@ def get_all_team_members(team_id):
     if not team:
         response = {
             'status': 'Failed',
-            'message': 'The team with id {} does not exist'.format(team_id)
+            'message': f'The team with id {team_id} does not exist'
         }
         return response, 404
     members = TeamMember.query.all()

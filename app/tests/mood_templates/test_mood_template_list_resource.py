@@ -49,8 +49,7 @@ class TestMoodTemplateListResource(TestCase):
         self.assertEqual(response.status_code, 409)
         self.assertEqual(json_response['status'], 'Failed')
         self.assertEqual(
-            json_response['message'],
-            'A mood template with name {} already exists'.format(name))
+            json_response['message'], f'A mood template with name {name} already exists')
 
     def test_mood_template_get_all(self):
         mood_template1 = create_mood_template_in_db('test_template1')

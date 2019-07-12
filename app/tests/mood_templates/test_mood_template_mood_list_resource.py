@@ -22,7 +22,7 @@ class TestMoodsTemplateMoodListResource(TestCase):
 
     def test_mood_template_get_moods_success(self):
         response = self.client.get(
-            '/mood_templates/{}/moods'.format(self.mood_template.public_id))
+            f'/mood_templates/{self.mood_template.public_id}/moods')
         json_response = response.get_json()
         data = json_response['data']
         self.assertEqual(response.status_code, 200)

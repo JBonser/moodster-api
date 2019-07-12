@@ -26,10 +26,10 @@ class TestTeamResource(TestCase):
 
     def test_team_get_fails_with_invalid_id(self):
         team_id = 'my-invalid-id'
-        response = self.client.get('/teams/{}'.format(team_id))
+        response = self.client.get(f'/teams/{team_id}')
         json_response = response.get_json()
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json_response['status'], 'Failed')
         self.assertEqual(
             json_response['message'],
-            'The team with id {} does not exist'.format(team_id))
+            f'The team with id {team_id} does not exist')

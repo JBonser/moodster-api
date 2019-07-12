@@ -11,12 +11,8 @@ class TeamRole(db.Model):
 
     def __repr__(self):
         return (
-            "<{class_name}("
-            "id={self.id}, "
-            "public_id={self.public_id}, "
-            "name={self.name}"
-            ")>".format(
-                class_name=self.__class__.__name__,
-                self=self
-            )
+            f"<{self.__class__.__name__} ("
+            f"id={self.id}, "
+            f"public_id={self.public_id}, "
+            f"name={self.name}) >"
         )

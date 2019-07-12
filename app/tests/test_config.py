@@ -1,11 +1,7 @@
-import os
-import unittest
-
 from flask import current_app
 from flask_testing import TestCase
 
 from app import create_app
-from app.config import basedir
 
 
 class TestDevelopmentConfig(TestCase):
@@ -33,7 +29,3 @@ class TestProductionConfig(TestCase):
 
     def test_app_is_production(self):
         self.assertTrue(self.app.config['DEBUG'] is False)
-
-
-if __name__ == '__main__':
-    unittest.main()

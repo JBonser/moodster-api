@@ -19,4 +19,8 @@ class User(db.Model):
     )
 
     def __repr__(self):
-        return "<User '{}'>".format(self.email)
+        return (
+            f"<{self.__class__.__name__} ("
+            f"public_id={self.public_id}, "
+            f"email={self.email}, "
+        )

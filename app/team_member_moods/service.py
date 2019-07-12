@@ -11,10 +11,7 @@ from .schemas import team_member_mood_view_schema
 
 def submit_new_team_member_mood(team_id, team_member_id, data):
     mood_id = data["mood_id"]
-    response = {
-        "status": "Failed",
-        "message": "Team with id {} does not exist".format(team_id),
-    }
+    response = {"status": "Failed", "message": f"Team with id {team_id} does not exist"}
 
     team = Team.query.filter_by(public_id=team_id).first()
     if team is None:
@@ -22,24 +19,19 @@ def submit_new_team_member_mood(team_id, team_member_id, data):
 
     team_member = TeamMember.query.filter_by(public_id=team_member_id).first()
     if team_member is None:
-        response["message"] = "Team Member with id {} does not exist".format(
-            team_member_id
-        )
+        response["message"] = f"Team Member with id {team_member_id} does not exist"
         return response, 404
 
-    if (
-        team_member.team_id != team.id
-    ):  # if team member exists but is not a member of submitted team
-        response[
-            "message"
-        ] = "Team Member with id {} does not belong to Team with id {}".format(
-            team_member_id, team_id
+    if team_member.team_id != team.id:
+        response["message"] = (
+            f"Team Member with id {team_member_id} "
+            f"does not belong to Team with id {team_id}"
         )
         return response, 404
 
     mood = Mood.query.filter_by(public_id=mood_id).first()
     if mood is None:
-        response["message"] = "Mood with id {} does not exist".format(mood_id)
+        response["message"] = f"Mood with id {mood_id} does not exist"
         return response, 404
 
     new_team_member_mood = marshal(

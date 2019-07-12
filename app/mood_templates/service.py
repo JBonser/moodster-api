@@ -13,8 +13,7 @@ def create_new_mood_template(data):
 
     found = MoodTemplate.query.filter_by(name=name).first()
     if found:
-        response['message'] = 'A mood template with name {}' \
-                              ' already exists'.format(name)
+        response['message'] = f'A mood template with name {name} already exists'
         return response, 409
 
     mood_template = marshal(
@@ -39,8 +38,7 @@ def get_all_moods_in_template(public_id):
     if not mood_template:
         response = {
             'status': 'Failed',
-            'message': 'The mood template with id {} '
-                       'does not exist'.format(public_id)
+            'message': f'The mood template with id {public_id} does not exist'
         }
         return response, 404
 
@@ -57,8 +55,7 @@ def get_mood_template(public_id):
     if not mood_template:
         response = {
             'status': 'Failed',
-            'message': 'The mood template with id {} '
-                       'does not exist'.format(public_id)
+            'message': f'The mood template with id {public_id} does not exist'
         }
         return response, 404
 
