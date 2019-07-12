@@ -1,4 +1,4 @@
-"""added team_member_mood
+"""Added team_member_mood
 
 Revision ID: 82a9891bbadc
 Revises: 6a44006bdc40
