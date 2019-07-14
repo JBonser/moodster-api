@@ -19,9 +19,8 @@ class TeamMemberMood(db.Model):
 
     def __repr__(self):
         return (
-            "<{class_name}("
-            "public_id={self.public_id}, "
-            "team_member_id={self.team_member_id}, "
-            "mood_id={self.mood_id} "
-            ")>".format(class_name=self.__class__.__name__, self=self)
+            f"<{self.__class__.__name___} ("
+            f"public_id={self.public_id}, "
+            f"team_member_id={self.team_member_id}, "
+            f"mood_id={self.mood_id}) >"
         )

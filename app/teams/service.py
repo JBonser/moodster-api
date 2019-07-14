@@ -26,7 +26,7 @@ def get_team(public_id):
     if not team:
         response = {
             'status': 'Failed',
-            'message': 'The team with id {} does not exist'.format(public_id)
+            'message': f'The team with id {public_id} does not exist'
         }
         return response, 404
     return marshal(data=team, fields=team_view_schema, envelope='data'), 200

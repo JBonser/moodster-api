@@ -6,6 +6,6 @@ mood_template_create_schema = Model('mood_template_get', {
 })
 
 mood_template_view_schema = Model('mood_template_post', {
-    'id': fields.String(attribute="public_id", description='member id'),
+    'id': fields.String(attribute='public_id', description='member id'),
     'name': fields.String(required=True, description='name')
 })

@@ -20,7 +20,7 @@ class TestMoodResource(TestCase):
 
     def test_mood_get(self):
         mood = create_mood_in_db('test_mood', '#FFFFFF', self.template)
-        response = self.client.get('/moods/'+mood.public_id)
+        response = self.client.get(f'/moods/{mood.public_id}')
         data = response.get_json()['data']
 
         self.assertEqual(response.status_code, 200)

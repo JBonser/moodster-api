@@ -10,4 +10,8 @@ class Team(db.Model):
     name = db.Column(db.String(255), nullable=False)
 
     def __repr__(self):
-        return "<Team '{}'>".format(self.name)
+        return (
+            f"<{self.__class__.__name__} ("
+            f"public_id={self.public_id}, "
+            f"name={self.name}, "
+        )

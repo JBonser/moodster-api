@@ -25,12 +25,8 @@ class TeamMember(db.Model):
 
     def __repr__(self):
         return (
-            "<{class_name}("
-            "team_id={self.team_id}, "
-            "user_id={self.user_id}, "
-            "role_id={self.role_id}"
-            ")>".format(
-                class_name=self.__class__.__name__,
-                self=self
-            )
+            f"<{self.__class__.__name__} ("
+            f"team_id={self.team_id}, "
+            f"user_id={self.user_id}, "
+            f"role_id={self.role_id}) >"
         )
