@@ -3,7 +3,7 @@ from flask_restplus import marshal
 
 from app import db
 from .model import TeamMemberMood
-from app.team_members.model import TeamMember
+from app.team_memberships.model import Membership
 from app.teams.model import Team
 from app.moods.model import Mood
 from .schemas import team_member_mood_view_schema
@@ -17,7 +17,7 @@ def submit_new_team_member_mood(team_id, team_member_id, data):
     if team is None:
         return response, 404
 
-    team_member = TeamMember.query.filter_by(public_id=team_member_id).first()
+    team_member = Membership.query.filter_by(public_id=team_member_id).first()
     if team_member is None:
         response["message"] = f"Team Member with id {team_member_id} does not exist"
         return response, 404
@@ -52,7 +52,7 @@ def create_team_member_mood_in_db(team_member, mood):
 
 def get_all_team_moods(team_id):
     team_moods = (
-        TeamMemberMood.query.join(TeamMember)
+        TeamMemberMood.query.join(Membership)
         .join(Team)
         .filter(Team.public_id == team_id)
         .all()
@@ -64,7 +64,7 @@ def get_all_team_moods(team_id):
 
 
 def get_all_team_member_moods(member_id):
-    team_member = TeamMember.query.filter_by(public_id=member_id).first()
+    team_member = Membership.query.filter_by(public_id=member_id).first()
     team_member_moods = TeamMemberMood.query.filter_by(team_member=team_member).all()
     return (
         marshal(

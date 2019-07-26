@@ -1,26 +1,26 @@
 from app import db
 
 
-class TeamMember(db.Model):
-    """ Team Member Model for storing team member information """
-    __tablename__ = "team_member"
+class Membership(db.Model):
+    """ Membership Model for storing team membership information """
+    __tablename__ = "membership"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     public_id = db.Column(db.String(100), unique=True)
     team_id = db.Column(db.Integer, db.ForeignKey('team.id'))
     team = db.relationship(
         'Team',
-        backref=db.backref('members', cascade='delete, delete-orphan')
+        backref=db.backref('memberships', cascade='delete, delete-orphan')
     )
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship(
         'User',
-        backref=db.backref('team_membership', cascade='delete, delete-orphan')
+        backref=db.backref('memberships', cascade='delete, delete-orphan')
     )
     role_id = db.Column(db.Integer, db.ForeignKey('team_role.id'))
     role = db.relationship(
         'TeamRole',
-        backref=db.backref('team_roles', cascade='delete, delete-orphan')
+        backref=db.backref('memberships', cascade='delete, delete-orphan')
     )
 
     def __repr__(self):

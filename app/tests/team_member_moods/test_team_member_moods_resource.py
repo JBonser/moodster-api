@@ -3,7 +3,7 @@ from flask_migrate import upgrade, downgrade
 from app import create_app, db
 from app.teams.service import create_team_in_db
 from app.users.service import create_user_in_db
-from app.team_members.service import create_team_member_in_db
+from app.team_memberships.service import create_membership_in_db
 from app.mood_templates.service import create_mood_template_in_db
 from app.moods.service import create_mood_in_db
 from app.team_roles.service import get_team_role_by_name
@@ -24,10 +24,10 @@ class TestTeamMembersMoodsResource(TestCase):
         self.test_user1 = create_user_in_db("test_user1@test.com", "password")
         self.test_user2 = create_user_in_db("test_user2@test.com", "password")
         self.member_role = get_team_role_by_name("Member")
-        self.test_team_member_1 = create_team_member_in_db(
+        self.test_team_member_1 = create_membership_in_db(
             self.test_team1, self.test_user1, self.member_role
         )
-        self.test_team_member_2 = create_team_member_in_db(
+        self.test_team_member_2 = create_membership_in_db(
             self.test_team1, self.test_user2, self.member_role
         )
 
