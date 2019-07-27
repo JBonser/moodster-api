@@ -31,12 +31,12 @@ class MoodList(Resource):
         return create_new_mood(data=data)
 
 
-@api.route('/<public_id>')
-@api.param('public_id', 'mood identifier')
+@api.route('/<mood_id>')
+@api.param('mood_id', 'mood identifier')
 class Mood(Resource):
     @api.doc('get mood')
     @api.response(200, 'Successfully retrieved the mood.')
     @api.response(404, 'Could not find a Mood with that id')
-    def get(self, public_id):
+    def get(self, mood_id):
         """Get a mood given its identifier"""
-        return get_mood(public_id)
+        return get_mood(mood_id)

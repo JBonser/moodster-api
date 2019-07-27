@@ -32,23 +32,23 @@ class MoodTemplateList(Resource):
         return create_new_mood_template(data=data)
 
 
-@api.route('/<public_id>')
-@api.param('public_id', 'mood template identifier')
+@api.route('/<mood_template_id>')
+@api.param('mood_template_id', 'mood template identifier')
 class MoodTemplate(Resource):
     @api.doc('get mood template')
     @api.response(200, 'Successfully retrieved the mood template.')
     @api.response(404, 'Could not find a Mood Template with that id')
-    def get(self, public_id):
+    def get(self, mood_template_id):
         """Get a mood template given its identifier"""
-        return get_mood_template(public_id)
+        return get_mood_template(mood_template_id)
 
 
-@api.route('/<public_id>/moods')
-@api.param('public_id', 'mood template identifier')
+@api.route('/<mood_template_id>/moods')
+@api.param('mood_template_id', 'mood template identifier')
 class MoodTemplateMoodList(Resource):
     @api.doc('get all moods in a mood template')
     @api.response(200, 'Successfully retrieved all moods for a mood template.')
     @api.response(404, 'Could not find a Mood Template with that id')
-    def get(self, public_id):
+    def get(self, mood_template_id):
         """Get all moods in a mood template given its identifier"""
-        return get_all_moods_in_template(public_id)
+        return get_all_moods_in_template(mood_template_id)

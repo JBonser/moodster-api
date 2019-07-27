@@ -21,11 +21,11 @@ class TeamList(Resource):
         return create_new_team(data=data)
 
 
-@api.route('/<public_id>')
-@api.param('public_id', 'The team identifier')
+@api.route('/<team_id>')
+@api.param('team_id', 'The team identifier')
 class Team(Resource):
     @api.doc('get team')
     @api.response(404, 'Could not find a Team with that id')
-    def get(self, public_id):
+    def get(self, team_id):
         """Get a team given its identifier"""
-        return get_team(public_id)
+        return get_team(team_id)
