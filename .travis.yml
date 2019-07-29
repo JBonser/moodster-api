@@ -16,4 +16,4 @@ before_script:
 env:
   - DATABASE_URL=postgresql://test_user:password@localhost/moodster_test
 script:
-  - python -m unittest discover app/tests/
+  - python -m unittest discover
