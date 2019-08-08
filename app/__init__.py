@@ -2,10 +2,13 @@ from flask import Flask, Blueprint
 from flask_restplus import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
 
 from app.config import config_by_name
 
-
+bcrypt = Bcrypt()
+jwt = JWTManager()
 db = SQLAlchemy(session_options={"expire_on_commit": False})
 migrate = Migrate()
 
@@ -15,6 +18,8 @@ def create_app(config_name):
     app_.config.from_object(config_by_name[config_name])
     db.init_app(app_)
     migrate.init_app(app_, db)
+    bcrypt.init_app(app_)
+    jwt.init_app(app_)
 
     blueprint = Blueprint("api", __name__)
     api = Api(blueprint, description="Moodster API")
@@ -26,6 +31,7 @@ def create_app(config_name):
     from app.team_roles.view import api as team_role_ns
     from app.mood_templates.view import api as mood_template_ns
     from app.moods.view import api as mood_ns
+    from app.auth.view import api as auth_ns
 
     api.add_namespace(team_ns)
     api.add_namespace(user_ns)
@@ -34,6 +40,7 @@ def create_app(config_name):
     api.add_namespace(team_role_ns)
     api.add_namespace(mood_template_ns)
     api.add_namespace(mood_ns)
+    api.add_namespace(auth_ns)
 
     app_.register_blueprint(blueprint)
 

@@ -1,7 +1,7 @@
 """Initial DB Migration
 
 Revision ID: f064070d85a2
-Revises: 
+Revises:
 Create Date: 2019-08-09 19:33:29.832680
 
 """
@@ -66,11 +66,7 @@ def schema_upgrades():
         sa.Column("id", sa.Integer(), autoincrement=True, nullable=False),
         sa.Column("public_id", sa.String(length=100), nullable=False),
         sa.Column("email", sa.String(length=120), nullable=False),
-        sa.Column(
-            "password",
-            sqlalchemy_utils.types.password.PasswordType(max_length=128),
-            nullable=False,
-        ),
+        sa.Column("password", sa.String(length=120), nullable=False),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("email"),
         sa.UniqueConstraint("public_id"),

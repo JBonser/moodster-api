@@ -10,6 +10,8 @@ setup(
     ],
     install_requires=[
         'Flask',
+        'Flask-Bcrypt',
+        'Flask-JWT-Extended',
         'Flask-Migrate',
         'Flask-SQLAlchemy',
         'SQLAlchemy-Utils',
