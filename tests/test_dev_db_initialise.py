@@ -1,23 +1,23 @@
 from flask_testing import TestCase
 from flask_migrate import upgrade, downgrade
 from app import db, create_app
-from scripts import dev_db_initialise
 from app.users.model import User
 from app.teams.model import Team
 from app.team_memberships.model import Membership
+from scripts import dev_db_initialise
 
 
 class TestDevDbInitialise(TestCase):
     def create_app(self):
-        return create_app('test')
+        return create_app("test")
 
     def setUp(self):
         db.drop_all()
-        upgrade(x_arg='data=true')
+        upgrade(x_arg="data=true")
 
     def tearDown(self):
         db.session.remove()
-        downgrade(x_arg='data=true', revision='base')
+        downgrade(x_arg="data=true", revision="base")
 
     def test_initialise(self):
         dev_db_initialise.initialise()
