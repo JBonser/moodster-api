@@ -2,6 +2,7 @@
 Moodster API Project
 
 [![Build Status](https://travis-ci.org/JBonser/moodster-api.svg?branch=master)](https://travis-ci.org/JBonser/moodster-api)
+[![Coverage Status](https://coveralls.io/repos/github/JBonser/moodster-api/badge.svg?branch=master)](https://coveralls.io/github/JBonser/moodster-api?branch=master)
 
 # Setting up the Development Environment
 ```
