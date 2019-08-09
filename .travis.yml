@@ -8,6 +8,8 @@ services:
 install:
   - pip install -r requirements.txt
   - pip install .
+  - pip install coverage
+  - pip install coveralls
 before_script:
   - psql -c "create user test_user with password 'password';" -U postgres
   - psql -c 'create database moodster_test;' -U postgres
@@ -16,4 +18,6 @@ before_script:
 env:
   - DATABASE_URL=postgresql://test_user:password@localhost/moodster_test
 script:
-  - python -m unittest discover
+  - coverage run --source=app,scrtips,tests -m unittest discover
+after_success:
+  - coveralls
