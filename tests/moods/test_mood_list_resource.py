@@ -3,7 +3,7 @@ from flask_migrate import upgrade, downgrade
 from app import create_app, db
 from app.moods.service import create_mood_in_db
 from app.mood_templates.service import create_mood_template_in_db
-from app.tests.test_helpers import assert_mood_in_response
+from tests.test_helpers import assert_mood_in_response
 
 
 class TestMoodListResource(TestCase):

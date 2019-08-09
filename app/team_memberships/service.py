@@ -2,14 +2,14 @@ import uuid
 from flask_restplus import marshal
 
 from app import db
-from app.team_members.model import TeamMember
+from app.team_memberships.model import Membership
 from app.teams.model import Team
 from app.users.model import User
 from app.team_roles.model import TeamRole
-from .schemas import team_member_view_schema
+from .schemas import membership_view_schema
 
 
-def create_new_team_member(team_id, data):
+def create_new_membership(team_id, data):
     user_id = data['user_id']
     role_id = data['team_role_id']
     response = {
@@ -30,20 +30,20 @@ def create_new_team_member(team_id, data):
         response['message'] = f'Role with id {role_id} does not exist'
         return response, 404
 
-    found = TeamMember.query.filter_by(user=user, team=team, role=role).first()
+    found = Membership.query.filter_by(user=user, team=team, role=role).first()
     if found:
         response['message'] = 'The user already has membership' \
                               ' of that role within the team'
         return response, 409
 
     new_team_member = marshal(
-        data=create_team_member_in_db(team, user, role),
-        fields=team_member_view_schema)
+        data=create_membership_in_db(team, user, role),
+        fields=membership_view_schema)
     return new_team_member, 201
 
 
-def create_team_member_in_db(team, user, role):
-    new_team_member = TeamMember(
+def create_membership_in_db(team, user, role):
+    new_team_member = Membership(
         public_id=str(uuid.uuid4()),
         team=team,
         user=user,
@@ -54,11 +54,11 @@ def create_team_member_in_db(team, user, role):
     return new_team_member
 
 
-def get_team_member(public_id):
-    return TeamMember.query.filter_by(public_id=public_id).first()
+def get_membership(public_id):
+    return Membership.query.filter_by(public_id=public_id).first()
 
 
-def get_all_team_members(team_id):
+def get_all_memberships(team_id):
     team = Team.query.filter_by(public_id=team_id).first()
     if not team:
         response = {
@@ -66,8 +66,8 @@ def get_all_team_members(team_id):
             'message': f'The team with id {team_id} does not exist'
         }
         return response, 404
-    members = TeamMember.query.all()
+    memberships = Membership.query.all()
     return marshal(
-        data=members,
-        fields=team_member_view_schema,
+        data=memberships,
+        fields=membership_view_schema,
         envelope='data'), 200

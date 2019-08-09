@@ -66,5 +66,5 @@ flask db upgrade head -x data=true
 For development of the application it is sometimes useful to have some default data in the database so you don't have to re-create this every time.
 To apply this defult data, simply call this script after you've ran the database migrations above:
 ```
-python scripts/dev_db_initialise.py
+python -m scripts.dev_db_initialise
 ```

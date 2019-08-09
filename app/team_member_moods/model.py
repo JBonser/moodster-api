@@ -12,9 +12,9 @@ class TeamMemberMood(db.Model):
     mood = db.relationship(
         "Mood", backref=db.backref("mood", cascade="delete, delete-orphan")
     )
-    team_member_id = db.Column(db.Integer, db.ForeignKey("team_member.id"))
+    team_member_id = db.Column(db.Integer, db.ForeignKey("membership.id"))
     team_member = db.relationship(
-        "TeamMember", backref=db.backref("team_member", cascade="delete, delete-orphan")
+        "Membership", backref=db.backref("team_member", cascade="delete, delete-orphan")
     )
 
     def __repr__(self):

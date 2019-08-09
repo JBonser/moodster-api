@@ -5,7 +5,8 @@ setup(
     name='moodster-api',
     version=1.0,
     packages=[
-        'app'
+        'app',
+        'scripts'
     ],
     install_requires=[
         'Flask',
