@@ -1,6 +1,6 @@
 from flask import request
 from flask_restplus import Resource, Namespace
-
+from flask_jwt_extended import jwt_required
 from .service import create_new_team, get_team
 from .schemas import team_view_schema, team_create_schema
 
@@ -26,6 +26,7 @@ class TeamList(Resource):
 class Team(Resource):
     @api.doc('get team')
     @api.response(404, 'Could not find a Team with that id')
+    @jwt_required
     def get(self, public_id):
         """Get a team given its identifier"""
         return get_team(public_id)

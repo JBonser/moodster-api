@@ -1,6 +1,9 @@
 from flask_testing import TestCase
 from flask_migrate import upgrade, downgrade
+from flask_jwt_extended import create_access_token
+
 from app import create_app, db
+from app.users.service import create_user_in_db
 from app.mood_templates.service import create_mood_template_in_db
 
 
@@ -10,6 +13,9 @@ class TestMoodTemplateListResource(TestCase):
 
     def setUp(self):
         upgrade(x_arg='data=true')
+        self.user = create_user_in_db("test@test.com", "password")
+        access_token = create_access_token(identity=self.user.id)
+        self.headers = {"Authorization": "Bearer {}".format(access_token)}
 
     def tearDown(self):
         db.session.remove()
@@ -18,7 +24,7 @@ class TestMoodTemplateListResource(TestCase):
     def test_mood_template_post_success(self):
         response = self.client.post(
             '/mood_templates/',
-            json={'name': 'test_template_name'}
+            json={'name': 'test_template_name'}, headers=self.headers
         )
         json_response = response.get_json()
 
@@ -31,7 +37,7 @@ class TestMoodTemplateListResource(TestCase):
         name = 'test_template_name'
         response = self.client.post(
             '/mood_templates/',
-            json={'name': name}
+            json={'name': name}, headers=self.headers
         )
         json_response = response.get_json()
 
@@ -42,7 +48,7 @@ class TestMoodTemplateListResource(TestCase):
         # Duplicate Request
         response = self.client.post(
             '/mood_templates/',
-            json={'name': name}
+            json={'name': name}, headers=self.headers
         )
         json_response = response.get_json()
 
@@ -55,7 +61,7 @@ class TestMoodTemplateListResource(TestCase):
         mood_template1 = create_mood_template_in_db('test_template1')
         mood_template2 = create_mood_template_in_db('test_template2')
 
-        response = self.client.get('/mood_templates/')
+        response = self.client.get('/mood_templates/', headers=self.headers)
         json_response = response.get_json()
         data = json_response['data']
 

@@ -1,4 +1,5 @@
 from flask_restplus import Resource, Namespace
+from flask_jwt_extended import jwt_required
 from .service import get_all_team_roles
 from .schemas import team_role_view_schema
 
@@ -12,6 +13,7 @@ class TeamRoleList(Resource):
     @api.response(200, 'Team roles successfully retrieved')
     @api.doc('Gets all team roles')
     @api.marshal_with(team_role_view_schema, envelope='data')
+    @jwt_required
     def get(self):
         """Get all team roles"""
         return get_all_team_roles()

@@ -1,5 +1,6 @@
 from flask import request
 from flask_restplus import Resource
+from flask_jwt_extended import jwt_required
 
 from app.team_memberships.service import (
     create_new_membership,
@@ -19,12 +20,14 @@ class TeamMembershipsList(Resource):
     @api.doc('Get all memberships for the team')
     @api.response(200, 'Successfully retrieved all memberships')
     @api.response(404, 'Could not find a Team with that id')
+    @jwt_required
     def get(self, public_id):
         """Get all memberships by team id."""
         return get_all_memberships(public_id)
 
     @api.doc('add membership to the team')
     @api.expect(membership_create_schema, validate=True)
+    @jwt_required
     def post(self, public_id):
         """Adds a team membership """
         data = request.get_json()

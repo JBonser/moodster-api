@@ -23,6 +23,7 @@ def create_app(config_name):
 
     blueprint = Blueprint("api", __name__)
     api = Api(blueprint, description="Moodster API")
+    jwt._set_error_handler_callbacks(api)
 
     from app.teams.view import api as team_ns
     from app.users.view import api as user_ns
