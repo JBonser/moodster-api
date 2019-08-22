@@ -1,6 +1,6 @@
 from flask import request
 from flask_restplus import Resource
-
+from flask_jwt_extended import jwt_required
 
 from .service import (
     submit_new_team_member_mood,
@@ -21,6 +21,7 @@ class TeamMoodList(Resource):
     @api.doc("get all moods submitted by a team")
     @api.response(200, "Successfully retrieved all submitted moods for a team")
     @api.response(404, "Could not find a team with that id")
+    @jwt_required
     def get(self, public_id):
         """Get all submitted moods by a team given its identifier"""
         return get_all_team_moods(public_id)
@@ -34,6 +35,7 @@ class TeamMemberMood(Resource):
     @api.response(404, "Error submitting Team Member Mood.")
     @api.doc("submit a team member mood")
     @api.expect(team_member_mood_post_schema, validate=True)
+    @jwt_required
     def post(self, public_id, member_id):
         """Submits a team members mood """
         data = request.get_json()
@@ -42,6 +44,7 @@ class TeamMemberMood(Resource):
     @api.doc("get all moods submitted by a team member")
     @api.response(200, "Successfully retrieved all submitted moods for a team member.")
     @api.response(404, "Could not find a team member with that id")
+    @jwt_required
     def get(self, public_id, member_id):
         """Get all submitted moods by a team member given its identifier"""
         return get_all_team_member_moods(member_id)

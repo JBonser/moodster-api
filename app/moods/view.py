@@ -1,5 +1,6 @@
 from flask import request
 from flask_restplus import Resource, Namespace
+from flask_jwt_extended import jwt_required
 
 from .service import (
     create_new_mood,
@@ -18,6 +19,7 @@ api.models[mood_create_schema.name] = mood_create_schema
 class MoodList(Resource):
     @api.response(200, 'Successfully retrieved all moods.')
     @api.marshal_list_with(mood_view_schema, envelope='data')
+    @jwt_required
     def get(self):
         """Get all moods"""
         return get_all_moods()
@@ -25,6 +27,7 @@ class MoodList(Resource):
     @api.doc('create a new mood')
     @api.expect(mood_create_schema, validate=True)
     @api.response(201, 'Successfully created the mood')
+    @jwt_required
     def post(self):
         """Creates a new mood"""
         data = request.get_json()
@@ -37,6 +40,7 @@ class Mood(Resource):
     @api.doc('get mood')
     @api.response(200, 'Successfully retrieved the mood.')
     @api.response(404, 'Could not find a Mood with that id')
+    @jwt_required
     def get(self, public_id):
         """Get a mood given its identifier"""
         return get_mood(public_id)

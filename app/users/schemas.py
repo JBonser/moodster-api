@@ -6,7 +6,7 @@ user_view_schema = Model('user', {
     'email': fields.String(required=True, description='user email')
 })
 
-user_create_schema = Model('user', {
+user_post_schema = Model('user', {
     'id': fields.String(attribute='public_id', description='user id'),
     'email': fields.String(required=True, description='user email'),
     'password': fields.String(required=True, description='user password')

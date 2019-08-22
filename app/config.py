@@ -1,4 +1,5 @@
 import os
+import datetime
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -10,6 +11,8 @@ class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'completely_unsafe_dev_key')
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_SECRET_KEY = SECRET_KEY
+    JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=1)
 
 
 class DevelopmentConfig(Config):

@@ -1,5 +1,7 @@
 from flask_testing import TestCase
 from flask_migrate import upgrade, downgrade
+from flask_jwt_extended import create_access_token
+
 from app import create_app, db
 from app.teams.service import create_team_in_db
 from app.users.service import create_user_in_db
@@ -30,6 +32,8 @@ class TestTeamMembersMoodsResource(TestCase):
         self.test_team_member_2 = create_membership_in_db(
             self.test_team1, self.test_user2, self.member_role
         )
+        access_token = create_access_token(identity=self.test_user1.id)
+        self.headers = {"Authorization": "Bearer {}".format(access_token)}
 
     def tearDown(self):
         db.session.remove()
@@ -40,6 +44,7 @@ class TestTeamMembersMoodsResource(TestCase):
             f"/teams/{self.test_team1.public_id}"
             f"/members/{self.test_team_member_1.public_id}/moods",
             json={"mood_id": self.mood1.public_id},
+            headers=self.headers,
         )
 
         json_response = response.get_json()
@@ -52,10 +57,11 @@ class TestTeamMembersMoodsResource(TestCase):
         self.assertEqual(json_response["mood_id"], self.mood1.public_id)
 
     def test_submit_team_member_mood_fails_with_invalid_team(self):
-        invalid_id = 'invalid_team_id'
+        invalid_id = "invalid_team_id"
         response = self.client.post(
             f"/teams/{invalid_id}/members/{self.test_team_member_1.public_id}/moods",
             json={"mood_id": self.mood1.public_id},
+            headers=self.headers,
         )
 
         json_response = response.get_json()
@@ -72,6 +78,7 @@ class TestTeamMembersMoodsResource(TestCase):
             f"/teams/{self.test_team1.public_id}"
             f"/members/{self.test_team_member_1.public_id}/moods",
             json={"mood_id": invalid_id},
+            headers=self.headers,
         )
 
         json_response = response.get_json()
@@ -87,6 +94,7 @@ class TestTeamMembersMoodsResource(TestCase):
         response = self.client.post(
             f"/teams/{self.test_team1.public_id}/members/{invalid_id}/moods",
             json={"mood_id": self.mood1.public_id},
+            headers=self.headers,
         )
 
         json_response = response.get_json()
@@ -94,8 +102,7 @@ class TestTeamMembersMoodsResource(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(json_response["status"], "Failed")
         self.assertEqual(
-            json_response["message"],
-            f"Team Member with id {invalid_id} does not exist",
+            json_response["message"], f"Team Member with id {invalid_id} does not exist"
         )
 
     def test_team_mood_get(self):
@@ -103,7 +110,9 @@ class TestTeamMembersMoodsResource(TestCase):
         set_mood_2 = create_team_member_mood_in_db(self.test_team_member_1, self.mood2)
         set_mood_3 = create_team_member_mood_in_db(self.test_team_member_2, self.mood1)
         set_mood_4 = create_team_member_mood_in_db(self.test_team_member_2, self.mood2)
-        response = self.client.get(f"/teams/{self.test_team1.public_id}/moods")
+        response = self.client.get(
+            f"/teams/{self.test_team1.public_id}/moods", headers=self.headers
+        )
         data = response.get_json()["data"]
 
         self.assertEqual(response.status_code, 200)
@@ -138,7 +147,8 @@ class TestTeamMembersMoodsResource(TestCase):
         set_mood_4 = create_team_member_mood_in_db(self.test_team_member_1, self.mood2)
         response = self.client.get(
             f"/teams/{self.test_team1.public_id}/"
-            f"members/{self.test_team_member_1.public_id}/moods"
+            f"members/{self.test_team_member_1.public_id}/moods",
+            headers=self.headers,
         )
         json_response = response.get_json()
         data = json_response["data"]
